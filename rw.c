@@ -137,7 +137,7 @@ int main(int argc,char *argv[])
 	printf("Pitch Bend converting...\n");
 	
 	k = argc - 13;
-	sscanf(argv[12], "%*[0-9.]Q%[0-9.]", TempoStr);
+	sscanf(argv[12], "%*[0-9.-]Q%[0-9.-]", TempoStr);
 	Tempo = atoi(TempoStr);
 	printf("Tempo = %d, Pitch Points: %d\n",Tempo, k);
 	
