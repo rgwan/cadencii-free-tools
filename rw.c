@@ -109,8 +109,7 @@ int main(int argc,char *argv[])
 	
 	if(argc <= 12)
 	{
-		/*for(i=0;i<argc;i++)
-			printf("%s\n", argt[i]);*/
+		k = 0;
 		for(i=0;i<j;i++)
 		{
 			k+=strlen(argt[i]) + 4;
@@ -118,19 +117,34 @@ int main(int argc,char *argv[])
 		
 		//k += 80;
 		Buffer = malloc(k);
-		memset(Buffer,0,k);
+		memset(Buffer,0,k - 1);
 		int offset = 0;
-		
 		for(i=0;i<j;i++)
 		{
 			int len = strlen(argt[i]);
-			memcpy(Buffer + offset, argt[i], len);
-			Buffer[offset + len]=' ';
-			offset += len + 1;
+			if(i == 0)
+			{
+				Buffer[offset] = ' ';
+				Buffer[offset + len + 1]=' ';
+			}
+			else
+			{
+				Buffer[offset] = '\"';
+				Buffer[offset + len + 1]='\"';	
+			}
+			Buffer[offset + len + 2]=' ';	
+			memcpy(Buffer + offset + 1, argt[i], len);
+			offset += len + 3;
 		}
 		printf("Calling %s\n",Buffer);
 		
 		system(Buffer); /**** using simple way to call it... */
+		
+		for(i=0;i<j;i++)
+		{
+			free(argt[i]);
+		}	
+		free(argt);
 		exit(0);
 	}
 	
@@ -164,7 +178,7 @@ int main(int argc,char *argv[])
 	
 	//k += 80;
 	Buffer = malloc(k);
-	sprintf(Buffer,"%s %s %s %s %s %s %s %s %s %s %s %s %s %s",argt[0],argt[1],argt[2],argt[3],argt[4],argt[5],argt[6],argt[7],argt[8],argt[9],argt[10],argt[11],argt[12],argt[13]);
+	sprintf(Buffer,"%s \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",argt[0],argt[1],argt[2],argt[3],argt[4],argt[5],argt[6],argt[7],argt[8],argt[9],argt[10],argt[11],argt[12],argt[13]);
 	printf("Calling %s\n",Buffer);
 	
 	system(Buffer); /**** using simple way to call it... */
@@ -174,7 +188,7 @@ int main(int argc,char *argv[])
 	for(i=0;i<14;i++)
 	{
 		free(argt[i]);
-	}	
+	}
 	free(argt);
 	if(RUCE_PATH!=RUCE_EXEC) free(RUCE_PATH);
 	/*if(execv(RUCE_PATH, argt)== -1)
