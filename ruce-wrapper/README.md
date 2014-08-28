@@ -1,7 +1,7 @@
-Cadencii-Free Tools
+cadencii-ruce-wrapper
 =====================
 
-OpenSource Synthesis tools for Cadencii.
+RUCE/Rocaloid support for cadencii
 
 BUILD
 -------
@@ -9,7 +9,7 @@ BUILD
 
 USAGE
 -------
-Copy the ruce-wrapper.exe, wavtool-pl.exe or elf to RUCE directory. And set cadencii 's render to "ruce-wrapper". Enjoy!
+Copy the ruce-wrapper.exe or elf to RUCE directory. And set cadencii 's render to "ruce-wrapper". Enjoy!
 
 CAUTION: Don't put RUCE into a path name which contains blank character! system() on Windows has some bug, so the wrapper can't execute RUCE!
 
