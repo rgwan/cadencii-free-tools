@@ -10,6 +10,7 @@ char RUCE_EXEC[] = "RUCE-CLI";
 #endif
 
 const char DEFAULT_FLAGS[] = "B50";
+const char DBG_NAME[] = "rucedbg.txt";
 
 /***** Icenowy $ *******/
 char encode(int i)
@@ -46,6 +47,19 @@ char *basename(char *input)
 	return ret;
 }
 
+int findCh(unsigned char *whole, char part)
+{
+	int i;
+	int len = strlen(whole);
+	for(i = 0;i <= len;i ++)
+	{
+		if(whole[i] == part)
+			return i;
+	}
+	return -1;
+}
+
+
 int main(int argc,char *argv[])
 {
 	int i, j, k;
@@ -53,8 +67,8 @@ int main(int argc,char *argv[])
 	char *PitchStr;
 	int Tempo;
 	char **argt;
-	char *RUCE_PATH;
-	char *BASE_PATH;
+	char *RUCE_PATH, *DBG_PATH;
+	char *BASE_PATH, *DBG_FILE;
 	char *Buffer;
 	
 	/*FILE * fp;
@@ -95,13 +109,37 @@ int main(int argc,char *argv[])
 	j = (argc <= 12)?argc:12;
 	for(i=1;i<j;i++)
 	{
-		if(i == 5 && !strcmp(argv[5],""))
-		{/** default set argv[5] to "B50" **/
-			argt[5] = malloc(strlen(DEFAULT_FLAGS) + 1);
-			strcpy(argt[5], DEFAULT_FLAGS);
+		if(i == 5)
+		{
+			if(!strcmp(argv[5], ""))
+			{
+				/** default set argv[5] to "B50" **/
+				argt[5] = malloc(strlen(DEFAULT_FLAGS) + 1);
+				strcpy(argt[5], DEFAULT_FLAGS);
+			}
+			else
+			{
+				if(findCh(argv[5],'V') != -1)
+				{
+				
+					DBG_PATH = basename(argv[1]);
+					if(DBG_PATH == NULL)
+					{
+						DBG_FILE = malloc(sizeof(DBG_NAME) + 20);
+						sprintf(DBG_FILE," >> %s 2>&1",DBG_NAME);
+					}
+					else
+					{
+						DBG_FILE = malloc(sizeof(DBG_NAME) + strlen(DBG_PATH) + 20);
+						sprintf(DBG_FILE," >> %s%s 2>&1",DBG_PATH,DBG_NAME);
+					}
+				}
+				goto normalcpy;
+			}
 		}
 		else
 		{
+			normalcpy:
 			argt[i] = malloc(strlen(argv[i]) + 1);
 			strcpy(argt[i], argv[i]);
 		}
@@ -115,7 +153,8 @@ int main(int argc,char *argv[])
 			k+=strlen(argt[i]) + 4;
 		}
 		
-		//k += 80;
+		if(DBG_FILE != NULL)
+			k += 80;
 		Buffer = malloc(k);
 		memset(Buffer,0,k - 1);
 		int offset = 0;
@@ -135,6 +174,10 @@ int main(int argc,char *argv[])
 			Buffer[offset + len + 2]=' ';	
 			memcpy(Buffer + offset + 1, argt[i], len);
 			offset += len + 3;
+		}
+		if(DBG_FILE != NULL)
+		{
+			memcpy(Buffer + offset, DBG_FILE, strlen(DBG_FILE));
 		}
 		printf("Calling %s\n",Buffer);
 		
@@ -176,9 +219,18 @@ int main(int argc,char *argv[])
 		k+=strlen(argt[i]) + 4;
 	}
 	
-	//k += 80;
+	if(DBG_FILE != NULL)
+		k+=80;
 	Buffer = malloc(k);
-	sprintf(Buffer,"%s \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",argt[0],argt[1],argt[2],argt[3],argt[4],argt[5],argt[6],argt[7],argt[8],argt[9],argt[10],argt[11],argt[12],argt[13]);
+	if(DBG_FILE == NULL)
+	{
+		sprintf(Buffer,"%s \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\"",argt[0],argt[1],argt[2],argt[3],argt[4],argt[5],argt[6],argt[7],argt[8],argt[9],argt[10],argt[11],argt[12],argt[13]);
+	}
+	else
+	{
+		printf("Debug\n");
+		sprintf(Buffer,"%s \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %s",argt[0],argt[1],argt[2],argt[3],argt[4],argt[5],argt[6],argt[7],argt[8],argt[9],argt[10],argt[11],argt[12],argt[13],DBG_FILE);
+	}
 	printf("Calling %s\n",Buffer);
 	
 	system(Buffer); /**** using simple way to call it... */
@@ -188,7 +240,7 @@ int main(int argc,char *argv[])
 	for(i=0;i<14;i++)
 	{
 		free(argt[i]);
-	}
+	}	
 	free(argt);
 	if(RUCE_PATH!=RUCE_EXEC) free(RUCE_PATH);
 	/*if(execv(RUCE_PATH, argt)== -1)
