@@ -6,7 +6,7 @@
 #if defined(__MINGW32__)
 char RUCE_EXEC[] = "RUCE.exe";
 #else
-char RUCE_EXEC[] = "RUCE-CLI";
+char RUCE_EXEC[] = "RUCE_CLI";
 #endif
 
 const char DEFAULT_FLAGS[] = "B50";
@@ -68,7 +68,7 @@ int main(int argc,char *argv[])
 	int Tempo;
 	char **argt;
 	char *RUCE_PATH, *DBG_PATH;
-	char *BASE_PATH, *DBG_FILE;
+	char *BASE_PATH, *DBG_FILE = NULL;
 	char *Buffer;
 	
 	/*FILE * fp;
@@ -121,7 +121,7 @@ int main(int argc,char *argv[])
 			{
 				if(findCh(argv[5],'V') != -1)
 				{
-				
+
 					DBG_PATH = basename(argv[1]);
 					if(DBG_PATH == NULL)
 					{
@@ -178,6 +178,7 @@ int main(int argc,char *argv[])
 		if(DBG_FILE != NULL)
 		{
 			memcpy(Buffer + offset, DBG_FILE, strlen(DBG_FILE));
+			printf("Debug\n");
 		}
 		printf("Calling %s\n",Buffer);
 		
@@ -186,7 +187,7 @@ int main(int argc,char *argv[])
 		for(i=0;i<j;i++)
 		{
 			free(argt[i]);
-		}	
+		}
 		free(argt);
 		exit(0);
 	}
@@ -239,8 +240,9 @@ int main(int argc,char *argv[])
 	free(PitchStr);
 	for(i=0;i<14;i++)
 	{
+		if(i == 12) continue;
 		free(argt[i]);
-	}	
+	}
 	free(argt);
 	if(RUCE_PATH!=RUCE_EXEC) free(RUCE_PATH);
 	/*if(execv(RUCE_PATH, argt)== -1)
