@@ -10,9 +10,9 @@ BUILD
 USAGE
 -------
 
-unpack <inf.d> <voice.d> <extract directory>
+unpack \<inf.d\> \<voice.d\> \<extract directory\>
 
-CAUTION: <extract directory> have to be exist!!!
+CAUTION: \<extract directory\> have to be exist!!!
 
 
 COPYING
