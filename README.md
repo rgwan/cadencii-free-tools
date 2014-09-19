@@ -1,7 +1,7 @@
 Cadencii-Free Tools
 =====================
 
-OpenSource Synthesis tools for Cadencii.
+Opensource Synthesis tools for Cadencii and some reverse engineering tools.
 
 BUILD
 -------
