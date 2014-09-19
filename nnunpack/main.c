@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
 		    ("\tExtract Wave file from NiaoNiao Soundbank.\n\tHey dsound!\n");
 		printf
 		    ("Under GPL v3 Licence. WanZhiYuan 2014 http://weirm.info \n");
-		exit(0);
+		goto freemem;
 	}
 	if ((fp = fopen(argv[1], "r")) == NULL) {
 		printf("Can not Open NiaoNiao Soundbank inf.d!\n");
