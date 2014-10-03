@@ -1,6 +1,8 @@
 cadencii-ruce-wrapper
 =====================
 
+!!OBSOLETED!!! RUCE GetPara has been supports cadencii!!!! No more wrappers need!!!!
+
 RUCE/Rocaloid support for cadencii
 
 BUILD

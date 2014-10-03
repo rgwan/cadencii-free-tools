@@ -3,6 +3,8 @@ Cadencii-Free Tools
 
 Opensource Synthesis tools for Cadencii and some reverse engineering tools.
 
+RUCE-Wrapper is OBSOLETED!!! RUCE GetPara has been supports cadencii!!!! No more wrappers need!!!!
+
 BUILD
 -------
 `make`
