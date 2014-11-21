@@ -41,7 +41,7 @@ void printusage() {
 int isFileExist(const char *filename) {
   int ret=0;
   FILE *file1=NULL;
-  file1 = fopen(filename,"r");
+  file1 = fopen(filename,"rb");
   if (file1) {
     ret=1;
     fclose(file1);

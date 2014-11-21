@@ -32,7 +32,7 @@
  */
 void wfd_init(const char *filename) {
   FILE *file1;
-  file1 = fopen(filename,"w");
+  file1 = fopen(filename,"wb");
   if (file1) {
     fclose(file1);
   }
@@ -144,7 +144,7 @@ int wfd_append(const char *outputfilename, const char *inputfilename,
   int c1,c2;
 
   memset(&inputfileinfo,0,sizeof(SF_INFO));
-  outfile = fopen(outputfilename,"r+");
+  outfile = fopen(outputfilename,"rb+");
   fseek(outfile,0,SEEK_END);
   if (inputfilename) {
     inputfile = sf_open(inputfilename,SFM_READ,&inputfileinfo);
